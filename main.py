@@ -38,7 +38,9 @@ def fill_arr(arr, size):
     return arr
 
 def fill_enemy(arr):
-    x2, y2 = 0, 0  # enemies coordinates
+    x2: int # enemies coordinates
+    y2: int # enemies coordinates
+
     while True:
         y2 = random.randrange(1, 8)
         x2 = random.randrange(1, 8)
@@ -49,27 +51,56 @@ def fill_enemy(arr):
             break
     return arr
 
-def move_player(arr, size):
-
-    x_temp, y_temp = 0, 0  # player temporary coordinates
+def pos_player(arr, size):
+    x_player, y_player = 0, 0  # player temporary coordinates
     for i in range(size):
         for j in range(size):
             if arr[i][j] == '@':
-                x_temp = i
-                y_temp = j
+                x_player = i
+                y_player = j
+
+                return x_player, y_player
+
+def check_new_pos_player(x_new, y_new, arr_check, size_arr):
+    x_temp, y_temp = pos_player(arr_check, size_arr)  # function in order to receive current x, y coordinates of player
+
+    if x_new > 9 or y_new > 9 or arr_check[x_new][y_new] == '*' or arr_check[x_new][y_new] == 'o':
+        # move_num -= 1
+        # ind_move_n += 1
+        return True
+    elif x_new != x_temp and y_new != y_temp:
+        # move_num -= 1
+        # ind_move_n += 1
+        return True
+
+    # fill track of player
+    arr_check[x_temp][y_temp] = 'o'
+
+    for i2 in range(x_temp, x_new, (1 if x_temp < x_new else -1)):
+        arr_check[i2][y_new] = 'o'
+
+    for j2 in range(y_temp, y_new, (1 if y_temp < y_new else -1)):
+        arr_check[x_new][j2] = 'o'
+
+def move_player(arr, size):
 
     print("\nPlayer, move in orthogonal:")
+    while True:
 
-    y = abs(float(input("\t\tenter pos x -> ")))
-    x = abs(float(input("\t\tenter pos y -> ")))
-    print()
-    x = int(x)
-    y = int(y)
-    x = (sizeA - 1) - x
-    arr[x][y] = '@'
-    arr[x_temp][y_temp] = ' '
+        y = abs(float(input("\t\tenter pos x -> ")))
+        x = abs(float(input("\t\tenter pos y -> ")))
+        print()
+        x = int(x)
+        y = int(y)
+        x = (sizeA - 1) - x
 
-    return arr
+        if check_new_pos_player(x, y, arr, size): # function
+            print("ERROR! pos x, y is uncorrect")
+            continue
+
+        arr[x][y] = '@'
+
+        return arr
 #--------------------------------------------------------#
 sizeA: int = 10  # size of field game
 arr_game = []

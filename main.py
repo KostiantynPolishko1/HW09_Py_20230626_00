@@ -52,11 +52,11 @@ def fill_enemy(arr, level_game):
     y2: int # enemies coordinates
     ind = level
     arr_enemy = []
-    logic = True
     x_player, y_player = pos_player(arr)
 
     for i in range(level_game):
         while True:
+            logic = True
             arr_temp = []
 
             y2 = random.randrange(1, 8)
@@ -152,8 +152,8 @@ def move_player(arr, move_num_cur):
 
         arr[x][y] = '@'
 
-        if check_enemy(arr_game):
-            print_arr(arr_game)
+        if check_enemy(arr):
+            print_arr(arr)
             continue
 
         return move_num_cur
